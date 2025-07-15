@@ -1,12 +1,10 @@
 ﻿using CashFlow.Application.UseCases.Expenses.Create;
 using CashFlow.Communication.Requests;
-using CashFlow.Communication.Responses;
-using CashFlow.Exception.ExceptionBase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class ExpensesController : ControllerBase
 {
@@ -16,23 +14,10 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Create([FromBody] RequestExpenseJson request)
     {
-        try
-        {             
-            var useCase = new CreateExpenseUseCase();
-            var response = useCase.Execute(request);
-            return Created(string.Empty, response);
-        }
-        catch (ErrorOnValidationException ex)
-        {
-            var errorMessage = new ResponseErrorJson(ex.Errors);
+        var useCase = new CreateExpenseUseCase();
 
-            return BadRequest(errorMessage);
-        }
-        catch
-        {
-            var errorMessage = new ResponseErrorJson("Unexpected error occurred while processing your request.");
+        var response = useCase.Execute(request);
 
-            return StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
-        }
+        return Created(string.Empty, response);
     }
 }
