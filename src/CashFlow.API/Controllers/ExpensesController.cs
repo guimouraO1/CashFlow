@@ -12,12 +12,11 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public IActionResult Create([FromBody] RequestExpenseJson request)
+    public IActionResult Create(
+        [FromServices] ICreateExpenseUseCase useCase,
+        [FromBody] RequestExpenseJson request)
     {
-        var useCase = new CreateExpenseUseCase();
-
         var response = useCase.Execute(request);
-
         return Created(string.Empty, response);
     }
 }

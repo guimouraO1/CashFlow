@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CashFlow.Infrastructure.DataAccess;
 
-public class CashFlowDbContext : DbContext
+internal class CashFlowDbContext : DbContext
 {
     public DbSet<Expense> Expenses { get; set; }
 
@@ -15,8 +15,6 @@ public class CashFlowDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Expense>()
-            .Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+        modelBuilder.Entity<Expense>().Property(e => e.Id).ValueGeneratedOnAdd();
     }
 }
